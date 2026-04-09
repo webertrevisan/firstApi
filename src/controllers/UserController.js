@@ -12,8 +12,17 @@ module.exports = {
       return a.id > b.id ? 1 : -1;
     });
 
-    console.log(request.query)
-    response.writeHead(200, { "content-type": "application/json" });
-    response.end(JSON.stringify(users));
+    response.send(200, sortedUsers);
   },
+getUserById(request, response) {
+  const {id} = request.params;
+
+  const user = users.find((user) => user.id === Number(id));
+
+  if (!user) {
+    return response.send(404, { error: "User not found" });
+  }
+  response.send(200, user);
+}
 };
+
